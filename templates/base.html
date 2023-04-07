@@ -1,0 +1,95 @@
+{% load static %}
+{% load cart_template_tag %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title> {% block title %} {% endblock title %}</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'logo.png' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="">
+                  <img src="{% static 'logo.png' %}" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                  ZUCOL
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'frontend:home' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    {% if user.is_authenticated %}
+
+                    <form class="d-flex">
+                        <a href="{% url 'frontend:summary' %}" class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">{{ user|cart_count }}</span>
+                        </a>
+                    </form>
+
+                    <li class="nav-item dropdown d-flex">
+                        <a class="nav-link dropdown-toggle" id="nDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ user.get_username }}</a>
+                        <ul class="dropdown-menu" aria-labelledby="nDropdown">
+                            <li><a class="dropdown-item" href="">My Orders</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Sign out</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item d-flex"><a class="nav-link" href="{% url 'accounts:login' %}">Sign in/up</a></li>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <div class="mt-5 pt-4">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+        </div>
+
+        {% block content %}
+
+        {% endblock %}
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Ecommerce Django</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+
+    {% block more_scripts %}
+    {% endblock more_scripts %}
+    </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %} Ecom | Summary {% endblock title %}
+
+
+
+{% block content %}
+<section class="py-5">
+    <div class="container table-responsive">
+         <h4>Order summary</h4>
+        <table class="table">
+          <thead>
+            <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">item</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                <th scope="col">Total price</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for order_item in object.items.all %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ order_item.item.title }}</td>
+
+              {% if order_item.item.discount_price %}
+                <td>Rs.{{ order_item.item.discount_price }}</td>
+                {% else %}
+                <td>Rs.{{ order_item.item.price }}</td>
+                {% endif %}
+
+              <td>
+                  <a href="{% url 'frontend:remove-single-item' order_item.item.slug %}"> <i class="bi bi-dash-circle mr-2"></i> </a>
+                  {{ order_item.quantity }}
+                  <a href="{% url 'frontend:add-to-cart' order_item.item.slug %}"> <i class="bi bi-plus-circle ml-2"></i> </a>
+              </td>
+
+                {% if order_item.item.discount_price %}
+                <td>Rs.{{ order_item.total_discount_item_price }}
+                <span class="badge rounded-pill bg-info ml-2">Saving: Rs.{{ order_item.amount_saved|floatformat:2 }}</span>
+                </td>
+                {% else %}
+                <td>Rs.{{ order_item.total_item_price }}</td>
+                {% endif %}
+            </tr>
+          {% endfor %}
+
+          {% if object.total_price %}
+
+          <tr>
+              <td colspan="4"><b>Order total</b></td>
+              <td><b>Rs. {{ object.total_price }}</b></td>
+          </tr>
+
+          {% endif %}
+
+          <tr>
+              <td colspan="5">
+                  <a href="{% url 'frontend:shipping-address' %}" class="btn btn-warning float-end m-4">Proceed to checkout</a>
+                <a href="/" class="btn btn-info float-end m-4">Continue shopping</a>
+              </td>
+          </tr>
+
+          </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock %}

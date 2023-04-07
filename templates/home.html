@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} Ecom | Home {% endblock title %}
+
+
+
+{% block content %}
+<section class="py-5">
+    <div class="container-fluid px-4 px-lg-5 mt-5">
+        <div class="row gx-3 gx-lg-3 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for item in object_list %}
+            <div class="col mb-5">
+                <div class="card shadow h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top p-2" src="{{ item.image.url }}" alt="..." style="max-height: 300px; width: auto;" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ item.title }}</h5>
+                            <!-- Product price-->
+                            {% if item.discount_price %}
+                            <p><del class="mt-2 text-danger">Rs.{{ item.price }}</del>
+                            Rs.{{ item.discount_price }}</p>
+                            <span class="badge rounded-pill bg-danger">%{{ item.get_discount_percent|floatformat:2 }} off</span>
+
+                            {% else %}
+                            <p>Rs.{{ item.price }}</p>
+                            {% endif %}
+
+                            <span class="badge rounded-pill bg-info">{{ item.get_category_display }}</span>
+
+                            <span class="badge rounded-pill bg-info">{{ item.get_label_display}}</span>
+
+
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <a class="btn btn-outline-dark mt-auto" href="{{ item.get_item_url }}">View options</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    {% if is_paginated %}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+
+        <li class="mx-4 mt-2"> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+
+      </ul>
+    </nav>
+    {% endif %}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Ecom | {{ object.title }} {% endblock title %}
+
+
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-md-5 justify-content-center">
+            <div class="col-md-4 mb-5">
+<!--                <div class=" shadow h-100">-->
+                    <!-- Product image-->
+                    <img class="card-img-top p-2" src="{{ object.image.url }}" alt="..." style="max-height: 300px; width: auto; max-width: 100%;" />
+
+<!--                </div>-->
+            </div>
+
+            <div class="col-md-8 mb-5">
+                <h5 class="fw-bolder">{{ item.title }}</h5>
+                <!-- Product price-->
+                {% if item.discount_price %}
+                <p><del class="mt-2 text-danger">Rs.{{ item.price }}</del>
+                Rs.{{ item.discount_price }}</p>
+                <span class="badge rounded-pill bg-danger">%{{ item.get_discount_percent|floatformat:2 }} off</span>
+
+                {% else %}
+                <p>Rs.{{ item.price }}</p>
+                {% endif %}
+
+                <span class="badge rounded-pill bg-info">{{ item.get_category_display }}</span>
+
+                <span class="badge rounded-pill bg-info">{{ item.get_label_display}}</span>
+
+                <p>{{ item.description }}</p>
+
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">
+                        <a class="btn btn-outline-dark mt-auto me-4" href="{% url 'frontend:home' %}">Continue shopping </a>
+                        <a class="btn btn-outline-dark mt-auto" href="{{ item.get_add_to_cart }}">Add to cart <i class="bi-cart-fill me-1"></i></a>
+                    </div>
+                </div>
+            </div><!--col-->
+        </div>
+    </div>
+</section>
+
+{% endblock %}

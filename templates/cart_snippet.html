@@ -1,0 +1,47 @@
+<h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-muted">Your cart</span>
+    <span class="badge bg-dark text-white ms-1 rounded-pill">{{ order.items.count }}</span>
+  </h4>
+
+  <!-- Cart -->
+  <ul class="list-group mb-3 z-depth-1">
+      {% for order_item in order.items.all %}
+    <li class="list-group-item d-flex justify-content-between lh-condensed">
+      <div>
+        <h6 class="my-0">{{ order_item.quantity }} x {{ order_item.item.title }}</h6>
+        <small class="text-muted">{{ order_item.item.snip_description }}</small>
+      </div>
+      <span class="text-muted">Rs.{{ order_item.final_price }}</span>
+    </li>
+    {% endfor %}
+
+    {% if order.coupon %}
+
+    <li class="list-group-item d-flex justify-content-between bg-light">
+      <div class="text-success">
+        <h6 class="my-0">Promo code</h6>
+        <small>{{ order.coupon.code }}</small>
+      </div>
+      <span class="text-success">-Rs.{{ order.coupon.amount }}</span>
+    </li>
+    {% endif %}
+
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total </span>
+      <strong>Rs.{{ order.total_price }}</strong>
+    </li>
+  </ul>
+  <!-- Cart -->
+
+<!--promo code-->
+{% if display_coupon_form %}
+    <form action="{% url 'frontend:add-coupon' %}" method="post" autocomplete="off" class="container">
+        {% csrf_token %}
+        <div class="input-group">
+            {{ couponform.code }}
+            <div class="input-group-addon">
+                <button class="btn btn-info m-0" type="submit">Redeem</button>
+            </div>
+        </div>
+    </form>
+{% endif %}

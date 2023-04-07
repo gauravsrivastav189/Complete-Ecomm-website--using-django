@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Login {% endblock title %}
+
+
+{% block content %}
+
+<div class="container mt-5 mb-5">
+    <form method="post">
+        {% csrf_token %}
+        {{signin_form}}
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+
+        {% if request.GET.next %}
+            <p>You are trying to go to {{ request.GET.next }}</p>
+        {% endif %}
+        <button class="btn btn-info" type="submit">Sign in</button>
+    </form>
+
+    <p>Please <a href="{% url 'accounts:signup' %}">Sign up</a> for an account</p>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %} Ecom | Shipping address {% endblock title %}
+
+
+
+{% block content %}
+<section class="py-5 container">
+   <div class="row">
+
+       <div class="col-md-8">
+
+           <h4 class="mb-4">Shipping Address</h4>
+
+           {% if order.billing_address %}
+           <p>You have already added the address! <i><b>{{ order.billing_address.street_address }}</b></i>, do you want to change?</p>
+                <a href="" class="btn btn-warning">Change address</a>
+                <a href="{% url 'frontend:payment' %}" class="btn btn-info">Proceed to checkout</a>
+           {% else %}
+
+           <form action="" method="post" autocomplete="off" class="container">
+               {% csrf_token %}
+
+               <div class="form-floating mb-3">
+                  {{ form.street_address }}
+                  <label for="floatingInput">Street and house number</label>
+               </div>
+
+               <div class="form-floating mb-3">
+                  {{ form.apartment_address }}
+                  <label for="floatingApartment">Apartment</label>
+               </div>
+
+               <div class="form-floating mb-3">
+                  {{ form.country }}
+                   <div class="invalid-feedback">Please select a valid country</div>
+                  <label for="floatingSelect">Select country</label>
+               </div>
+               <div class="form-floating mb-3">
+                  {{ form.zip_code }}
+                  <label for="floatingZip">Zip code</label>
+               </div>
+
+                  <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+           </form>
+
+           {% endif %}
+
+       </div><!--md8-->
+
+       <div class="col-md-4">
+           {% include 'cart_snippet.html' %}
+       </div>
+
+   </div><!--container-->
+</section>
+
+{% endblock %}
